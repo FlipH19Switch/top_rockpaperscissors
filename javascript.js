@@ -12,57 +12,58 @@ Sign-off = report winner or loser
 let option1 = "Rock";
 let option2 = "Paper";
 let option3 = "Scissors";
-
-function getComputerChoice() {
-    let gameOptions = [option1,option2,option3];
-    return gameOptions[Math.floor(Math.random()*gameOptions.length)]
-};
-
+let gameOptions = [option1,option2,option3];
 let playerSelection;
-let computerSelection = getComputerChoice();
+let computerSelection;
+let playerScore = 0;
+let computerScore = 0;
+let message
 
 function playRound() {
     playerSelection = prompt("Choose Rock, Paper, or Scissors");
     playerSelection = playerSelection.toUpperCase().slice(0,1) + playerSelection.toLowerCase().slice(1);
-    
-    if (
+    computerSelection = gameOptions[Math.floor(Math.random()*gameOptions.length)];
+
+    if (playerSelection !== option1 && playerSelection !== option2 && playerSelection !== option3) {
+        computerScore++;
+        message = "You Lose! You did not pick a correct option!";
+        console.log(message);
+        return message;
+    }
+    else if (
         playerSelection === option1 && computerSelection === option2 ||
         playerSelection === option2 && computerSelection === option3 ||
         playerSelection === option3 && computerSelection === option1) {
-        return "You Lose! " + computerSelection + " beats " + playerSelection;
-        computerScore++
+        computerScore++;
+        message = "You Lose! " + computerSelection + " beats " + playerSelection;
+        console.log(message);
+        return message;
     }
     else if (playerSelection === computerSelection) {
-        return "Tie Game!"
+        message = "Tie Game!";
+        console.log(message);
+        return message;
     }
     else {
-        return "You Win! " + playerSelection + " beats " + computerSelection;
-        playerScore++
+        playerScore++;
+        message = "You Win! " + playerSelection + " beats " + computerSelection;
+        console.log(message);
+        return message;
     }
-
-
 };
 
-console.log(playRound())
+function game() {
+    for (let i = 0; i < 5; i++) {
+        playRound();
+    }
 
-for (playerScore = 0, computerScore = 0; playerScore < 5 && computerScore < 5;playerScore++ ) {
-    getComputerChoice();
-    playRound()
+    if (computerScore > playerScore) {
+        alert("You Lose!")
+    }
+    else if (computerScore < playerScore) {
+        alert("You Win!")
+    }
+    else {alert("Tie Game!")}
 }
 
-if(computerScore === 5) {
-    alert("You Lose!")
-}
-else if (playerSelection === 5) {
-    alert("You Win!")
-}
-
-console.log("Player = " + playerScore + " and Computer = " + computerScore)
-
-
-
-/*
-function outcome(playerSelection, computerSelection) {
-    if (playerSelection === gameOptions[0] && computerSelection === gameOptions[])
-}
-*/
+game()
