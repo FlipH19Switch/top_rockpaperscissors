@@ -3,7 +3,6 @@ OVERVIEW
 Game = rock-paper-scissors
 Opponent = computer
 Opponent strategy = randomly generate "Rock", "Paper", or "Scissors"
-Player objective = win best of five rounds
 Display results of each round via console.log()
 Sign-off = report winner or loser
 */
@@ -13,57 +12,57 @@ let option1 = "Rock";
 let option2 = "Paper";
 let option3 = "Scissors";
 let gameOptions = [option1,option2,option3];
-let playerSelection;
 let computerSelection;
+let playerSelection;
 let playerScore = 0;
 let computerScore = 0;
-let message
+let message;
+const resultsRound = document.querySelector('#results-round');
+const resultsPlayerScore = document.querySelector('#player-score');
+const resultsComputerScore = document.querySelector('#computer-score');
+const resultsContainer = document.querySelector('#results-container');
+const results = document.createElement('div');
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        if(playerScore === 5 || computerScore === 5) {
+            return;
+        }
+        playerSelection = button.textContent;
+        playRound();
+        resultsPlayerScore.textContent = `Player Score: ${playerScore}`;
+        resultsComputerScore.textContent = `Computer Score: ${computerScore}`;
+    })
+})
 
 function playRound() {
-    playerSelection = prompt("Choose Rock, Paper, or Scissors");
-    playerSelection = playerSelection.toUpperCase().slice(0,1) + playerSelection.toLowerCase().slice(1);
     computerSelection = gameOptions[Math.floor(Math.random()*gameOptions.length)];
 
-    if (playerSelection !== option1 && playerSelection !== option2 && playerSelection !== option3) {
-        computerScore++;
-        message = "You Lose! You did not pick a correct option!";
-        console.log(message);
-        return message;
-    }
-    else if (
+    if (
         playerSelection === option1 && computerSelection === option2 ||
         playerSelection === option2 && computerSelection === option3 ||
         playerSelection === option3 && computerSelection === option1) {
         computerScore++;
         message = "You Lose! " + computerSelection + " beats " + playerSelection;
-        console.log(message);
-        return message;
+        resultsRound.textContent = message;
     }
     else if (playerSelection === computerSelection) {
         message = "Tie Game!";
-        console.log(message);
-        return message;
+        resultsRound.textContent = message;
     }
     else {
         playerScore++;
         message = "You Win! " + playerSelection + " beats " + computerSelection;
-        console.log(message);
-        return message;
+        resultsRound.textContent = message;
+    }
+
+    if (playerScore === 5) {
+        results.textContent = "You won!";
+        resultsContainer.appendChild(results);
+    }
+    else if (computerScore === 5) {
+        results.textContent = "You lost!";
+        resultsContainer.appendChild(results);
     }
 };
-
-function game() {
-    for (let i = 0; i < 5; i++) {
-        playRound();
-    }
-
-    if (computerScore > playerScore) {
-        alert("You Lose!")
-    }
-    else if (computerScore < playerScore) {
-        alert("You Win!")
-    }
-    else {alert("Tie Game!")}
-}
-
-game()
